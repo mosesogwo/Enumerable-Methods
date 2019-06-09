@@ -53,6 +53,20 @@ module Enumerable
       end
     end
   end
+
+  def my_count()
+    count = 0
+    if block_given?
+      self.my_each do |i| 
+        if yield i
+          count++
+        end
+      end
+      count
+    end
+  end
+
+
 end
 
 
@@ -147,9 +161,9 @@ end
 # ["hello","string"].my_each_with_index {|value, index| puts "#{index}: #{value}"}
 # p [1,2,3,4,5,8,9].my_select {|num| num.even?}
 # [3, 6, 2].my_all? {|obj| obj > 0}
-p [3, 6, -1].my_any? {|obj| obj > 0}
+# p [3, 6, -1].my_any? {|obj| obj > 0}
 # [nil,false].my_none?
-# [2,5,523].my_count() #{|n| n > 4}
+p [2, 5, 523].my_count {|obj| obj > 3}
 # (1..3).my_inject(4) {|sum, n| sum * n}
 # multiply_els([2,4,5])
 # (1..4).my_map
