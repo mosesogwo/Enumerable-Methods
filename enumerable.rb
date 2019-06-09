@@ -38,82 +38,30 @@ module Enumerable
   def my_any?
     result = false
     self.my_each do |i|
-      if not yield i
+      if yield i
         result = true
       end
     end
     result
   end
 
-  def my_none
+  def my_none?
+    result = true
+    self.my_each do |i|
+      if yield i
+        result = false
+      end
+    end
   end
 end
 
-# [2, 3, 4].my_each_with_index
 
 
 # module Enumerable
 
 #
 
-# 	def my_any?
-# 		index = 0
-# 		length = self.length
-# 		status = false
-
-# 		if block_given?
-# 			length.times do
-# 				if yield self[index]
-# 					status = true
-# 					break
-# 				else
-# 					index += 1
-# 				end
-# 			end
-# 			puts status
-# 		else
-# 			length.times do
-# 				if  self[index]
-# 					status = true
-# 					break
-# 				else
-# 					index += 1
-# 				end
-# 			end	
-# 			puts status	
-# 		end	
-# 	end
-
-# 	def my_none?
-# 		index = 0
-# 		length = self.length
-# 		status = true
-
-# 		if block_given?
-# 			length.times do
-# 				if not yield self[index]
-# 					index +=1
-# 				else
-# 					index += 1
-# 					status = false
-# 					break
-# 				end
-# 			end
-# 			puts status
-# 		else
-# 			length.times do
-# 				if not self[index]
-# 					index += 1
-# 				else
-# 					status = false
-# 					index += 1
-# 					break
-# 				end
-# 			end	
-# 			puts status	
-# 		end	
-# 	end
-
+# 
 # 	def my_count (arg = nil)
 # 		index = 0 
 # 		length = self.length
@@ -199,7 +147,7 @@ end
 # ["hello","string"].my_each_with_index {|value, index| puts "#{index}: #{value}"}
 # p [1,2,3,4,5,8,9].my_select {|num| num.even?}
 # [3, 6, 2].my_all? {|obj| obj > 0}
-p [3,6,-1].my_any? {|obj| obj < 0}
+p [3, 6, -1].my_any? {|obj| obj > 0}
 # [nil,false].my_none?
 # [2,5,523].my_count() #{|n| n > 4}
 # (1..3).my_inject(4) {|sum, n| sum * n}
