@@ -92,13 +92,15 @@ module Enumerable
     memo
   end
 
-  def multiply_els(arr)
-    arr.my_inject(1) {|product ele| product * ele}
-  end
+  
 
 end
 
-multiply_els([2,  4, 5])
+def multiply_els(arr)
+  arr.my_inject(1) {|product, ele| product * ele}
+end
+
+p multiply_els([2,  4, 5])
 
 # def multiply_els(array)
 # 	array.my_inject {|sum, n| sum * n}
