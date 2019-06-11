@@ -58,15 +58,16 @@ module Enumerable
     count = 0
     if block_given?
       self.my_each do |i| 
-        count++ if yield i
+        count += 1 if yield i
       end
-    elsif arg == nil
+    elsif not arg
       count = self.length
     else
       self.my_each do |i|
-        count++ if i == arg
+        count += 1 if i.equal?(arg)
       end
     end
+    count
   end
 
 
@@ -164,7 +165,7 @@ end
 # [3, 6, 2].my_all? {|obj| obj > 0}
 # p [3, 6, -1].my_any? {|obj| obj > 0}
 # [nil,false].my_none?
-puts [2, 5, 523].my_count
+puts [2, 5, 523].my_count {|a| a < 523}
 # (1..3).my_inject(4) {|sum, n| sum * n}
 # multiply_els([2,4,5])
 # (1..4).my_map
