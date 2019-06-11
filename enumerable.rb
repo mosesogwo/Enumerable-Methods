@@ -70,6 +70,19 @@ module Enumerable
     count
   end
 
+  def my_map
+    result = []
+    if block_given?
+      self.my_each do |i|
+        result << (yield i)
+      end
+    else
+      self.my_each do |i|
+        result << i
+      end
+    end
+    p result
+  end
 
 end
 
@@ -77,34 +90,7 @@ end
 
 # module Enumerable
 
-# 	def my_count (arg = nil)
-# 		index = 0 
-# 		length = self.length
-# 		count = 0
-
-# 		if block_given?
-# 			length.times do
-# 				if yield self[index]
-# 					count += 1
-# 				end
-# 				index += 1
-# 			end
-# 		elsif not arg
-# 			#no argument given
-# 			count = length
-# 		else
-# 			#argument given
-# 			length.times do
-# 				if self[index] == arg
-# 					count += 1
-# 				end
-# 				index += 1 
-# 			end
-# 		end
-# 		puts count
-#   end
-# end
-
+# 	
 # 	def my_map (&my_proc)
 # 		index = 0
 # 		array = []
@@ -165,7 +151,7 @@ end
 # [3, 6, 2].my_all? {|obj| obj > 0}
 # p [3, 6, -1].my_any? {|obj| obj > 0}
 # [nil,false].my_none?
-puts [2, 5, 523].my_count {|a| a < 523}
+# puts [2, 5, 523].my_count {|a| a < 523}
 # (1..3).my_inject(4) {|sum, n| sum * n}
 # multiply_els([2,4,5])
 # (1..4).my_map
