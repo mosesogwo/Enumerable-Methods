@@ -81,59 +81,18 @@ module Enumerable
         result << i
       end
     end
-    p result
+    result
+  end
+
+  def my_inject(arg = 0)
+    memo = arg
+    self.my_each do |i|
+      memo = (yield memo, i)
+    end
+    memo
   end
 
 end
-
-
-
-# module Enumerable
-
-# 	
-# 	def my_map (&my_proc)
-# 		index = 0
-# 		array = []
-# 		enumArray = self.to_a
-# 		length = enumArray.length
-
-# 		if block_given?
-# 			length.times do 
-# 				array << (yield enumArray[index])
-# 				index += 1
-# 			end
-# 		elsif my_proc
-# 			length.times do
-# 				array << my_proc.call(enumArray[index])
-# 				index += 1
-# 			end
-# 		else 
-# 			length.times do
-# 				array << enumArray[index]
-# 				index += 1 
-# 			end
-# 		end
-# 		p array
-# 	end
-
-# 	def my_inject (start = 0)
-# 		index = 0
-# 		enumArray = self.to_a
-# 		length = enumArray.length - 1
-# 		total = enumArray[0]
-
-# 		if start != 0 
-# 			total = start
-# 		end
-
-# 		length.times do
-# 			total = yield(total, enumArray[index + 1])
-# 			index += 1
-# 		end
-# 		p total
-# 	end
-
-# end
 
 
 # def multiply_els(array)
