@@ -1,10 +1,10 @@
 module Enumerable
+
   def my_each
     for i in self
       yield i
     end
   end
-
 
   def my_each_with_index
     idx = 0
@@ -13,7 +13,6 @@ module Enumerable
       idx += 1
     end
   end
-
 
   def my_select
     collection = []
@@ -70,16 +69,18 @@ module Enumerable
     count
   end
 
-  def my_map
+  def my_map(&proc)
     result = []
-    if block_given?
+    if proc
+      self.my_each do |i|
+        result << proc.call(i)
+      end
+    elsif block_given?
       self.my_each do |i|
         result << (yield i)
       end
     else
-      self.my_each do |i|
-        result << i
-      end
+      result = self
     end
     result
   end
@@ -92,7 +93,8 @@ module Enumerable
     memo
   end
 
-  
+  triple = Proc.new {|a| a * 3}
+  p [2, 4, 8].my_map(&triple)
 
 end
 
@@ -100,26 +102,3 @@ def multiply_els(arr)
   arr.my_inject(1) {|product, ele| product * ele}
 end
 
-p multiply_els([2,  4, 5])
-
-# def multiply_els(array)
-# 	array.my_inject {|sum, n| sum * n}
-# end
-
-# double_me = Proc.new {|x| x + x}
-
-#TESTS#
-
-
-# [1,4,234,2].my_each {|n| p n}
-# ["hello","string"].my_each_with_index {|value, index| puts "#{index}: #{value}"}
-# p [1,2,3,4,5,8,9].my_select {|num| num.even?}
-# [3, 6, 2].my_all? {|obj| obj > 0}
-# p [3, 6, -1].my_any? {|obj| obj > 0}
-# [nil,false].my_none?
-# puts [2, 5, 523].my_count {|a| a < 523}
-# (1..3).my_inject(4) {|sum, n| sum * n}
-# multiply_els([2,4,5])
-# (1..4).my_map
-# (1..4).my_map {|i| i * i}
-# (1..4).my_map(&double_me)
