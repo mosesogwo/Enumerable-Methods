@@ -93,12 +93,8 @@ module Enumerable
     memo
   end
 
-  triple = Proc.new {|a| a * 3}
-  p [2, 4, 8].my_map(&triple)
-
 end
 
 def multiply_els(arr)
   arr.my_inject(1) {|product, ele| product * ele}
 end
-
