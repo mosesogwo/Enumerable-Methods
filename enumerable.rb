@@ -1,6 +1,6 @@
-# frozen_string_literal: true.
+# frozen_string_literal: true
 
-#This module recreates each, each_with_index, select,
+# This module recreates each, each_with_index, select,
 # all, any, none, count, map and inject enumerable methods.
 module Enumerable
   def my_each
