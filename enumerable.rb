@@ -3,7 +3,6 @@
 #This module recreates each, each_with_index, select,
 # all, any, none, count, map and inject enumerable methods.
 module Enumerable
-
   def my_each
     for i in self
       yield i
@@ -96,7 +95,6 @@ module Enumerable
     end
     memo
   end
-
 end
 
 def multiply_els(arr)
