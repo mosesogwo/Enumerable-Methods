@@ -4,70 +4,83 @@
 # all, any, none, count, map and inject enumerable methods.
 module Enumerable
   def my_each
-    for i in self
-      yield i
+    if block_given?
+      for i in self
+        yield i
+      end
+      self
+    else
+      return self.to_enum
     end
   end
 
   def my_each_with_index
     idx = 0
-    for i in self
-      yield i, idx
-      idx += 1
+    if block_given?
+      my_each do |i|
+        yield(i, idx)
+        idx += 1
+      end
+    else
+      return to_enum
     end
   end
 
   def my_select
-    collection = []
-    self.my_each do |i|
-      if yield i
-        collection << i
+    if block_given?
+      collection = []
+      my_each do |i|
+        collection << i if yield i
       end
+    else
+      return self.to_enum
     end
     collection
   end
 
   def my_all?
     result = true
-    self.my_each do |i|
-      if not yield i 
-        result = false
-      end
+    my_each do |i|
+      result = false unless yield i
+      break if not result
     end
     result
   end
 
   def my_any?
     result = false
-    self.my_each do |i|
-      if yield i
-        result = true
-      end
+    my_each do |i|
+      result = true if yield i
+      break if result
     end
     result
   end
 
   def my_none?
     result = true
-    self.my_each do |i|
-      if yield i
-        result = false
+    if block_given?
+      my_each do |i|
+        result = false if yield i
+        break if not result
       end
+    else
+      return false
     end
+    result
   end
 
-  def my_count(arg=nil)
+  def my_count(arg = nil)
     count = 0
-    if block_given?
-      self.my_each do |i| 
-        count += 1 if yield i
-      end
-    elsif not arg
-      count = self.length
-    else
-      self.my_each do |i|
+    if arg
+      my_each do |i|
         count += 1 if i.equal?(arg)
       end
+    elsif block_given?
+      my_each do |i|
+        count += 1 if yield i
+      end
+    else
+      count = length
     end
     count
   end
@@ -75,28 +88,31 @@ module Enumerable
   def my_map(&proc)
     result = []
     if proc
-      self.my_each do |i|
+      my_each do |i|
         result << proc.call(i)
       end
     elsif block_given?
-      self.my_each do |i|
+      my_each do |i|
         result << (yield i)
       end
     else
-      result = self
+      return self.to_enum
     end
     result
   end
 
-  def my_inject(arg = 0)
-    memo = arg
-    self.my_each do |i|
-      memo = (yield memo, i)
+  def my_inject(*arg)
+    if !arg.empty?
+      memo = arg[0]
+      my_each do |i|
+        memo = (yield memo, i)
+      end
+    else
+      memo = first
+      drop(1).my_each do |i|
+        memo = (yield memo, i)
+      end
     end
     memo
   end
-end
-
-def multiply_els(arr)
-  arr.my_inject(1) { |product, ele| product * ele }
 end
